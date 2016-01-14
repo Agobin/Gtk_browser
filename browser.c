@@ -182,7 +182,7 @@ GtkWidget * setPageLayout(GtkWidget* window, GtkWidget* browserForm){
 	GtkWidget *scrolledWindow;
 	GtkWidget *webView;
 	GtkWidget *pageLayoutExpander;
-
+	
 	webView = webkit_web_view_new();
 	pageLayoutExpander = gtk_expander_new_with_mnemonic("V_iew page");
 
@@ -282,6 +282,7 @@ GtkWidget * setPageLayout(GtkWidget* window, GtkWidget* browserForm){
 	gtk_table_attach_defaults( GTK_TABLE(tableInitialing), searchMainBut, 15, 16, 1, 2 );
 	g_signal_connect_swapped(searchMainBut, "clicked", G_CALLBACK(setUri), mainSearchBox);
 	g_signal_connect_swapped(searchMainBut, "clicked",  G_CALLBACK(go), webView);
+
 	//g_signal_connect_swapped(searchMainBut, "clicked",  G_CALLBACK(initialiseEntryCompletion), completion);
 
 	//Linking callbacks to signals emitted by webview widget
@@ -301,6 +302,8 @@ GtkWidget * setPageLayout(GtkWidget* window, GtkWidget* browserForm){
 
 	image = gtk_image_new_from_file("images/OneClickLogo.png"); 
 	GtkWidget* imageEventBox = initialiseEventBox(image);
+
+	g_signal_connect( G_OBJECT(imageEventBox), "button_press_event", G_CALLBACK(searchOneClick), webView);
 	g_signal_connect( G_OBJECT(imageEventBox), "button_press_event", G_CALLBACK(logoClicked), mainSearchBox);
 	gtk_table_attach_defaults(GTK_TABLE(tableInitialing), imageEventBox, 3, 14, 14, 24);
 
@@ -313,22 +316,28 @@ GtkWidget * setPageLayout(GtkWidget* window, GtkWidget* browserForm){
 
 	//Adding event handlers to images
 	facebookEventBox = initialiseEventBox(facebookLogo);
+	g_signal_connect( G_OBJECT(facebookEventBox), "button_press_event", G_CALLBACK(searchFacebook), webView);
 	g_signal_connect( G_OBJECT(facebookEventBox), "button_press_event", G_CALLBACK(facebookLogoClicked), mainSearchBox);
+	
 	gtk_table_attach_defaults(GTK_TABLE(tableInitialing), facebookEventBox, 4, 6, 24, 28 );
 
 	gmailEventBox = initialiseEventBox(gmailLogo);
+	g_signal_connect( G_OBJECT(gmailEventBox), "button_press_event", G_CALLBACK(searchGmail), webView);
 	g_signal_connect( G_OBJECT(gmailEventBox), "button_press_event", G_CALLBACK(gmailLogoClicked), mainSearchBox);
 	gtk_table_attach_defaults(GTK_TABLE(tableInitialing), gmailEventBox, 6, 8, 24, 28 );
 
 	twitterEventBox = initialiseEventBox(twitterLogo);
+	g_signal_connect( G_OBJECT(twitterEventBox), "button_press_event", G_CALLBACK(searchTwitter), webView);
 	g_signal_connect( G_OBJECT(twitterEventBox), "button_press_event", G_CALLBACK(twitterLogoClicked), mainSearchBox);
 	gtk_table_attach_defaults(GTK_TABLE(tableInitialing), twitterEventBox, 8, 10, 24, 28 );
 
 	skypeEventBox = initialiseEventBox(skypeLogo);
+	g_signal_connect( G_OBJECT(skypeEventBox), "button_press_event", G_CALLBACK(searchSKype), webView);
 	g_signal_connect( G_OBJECT(skypeEventBox), "button_press_event", G_CALLBACK(skypeLogoClicked), mainSearchBox);
 	gtk_table_attach_defaults(GTK_TABLE(tableInitialing), skypeEventBox, 10, 12, 24, 28 );
 
 	googleEventBox = initialiseEventBox(googleLogo);
+	g_signal_connect( G_OBJECT(googleEventBox), "button_press_event", G_CALLBACK(searchGoogle), webView);
 	g_signal_connect( G_OBJECT(googleEventBox), "button_press_event", G_CALLBACK(googleLogoClicked), mainSearchBox);
 	gtk_table_attach_defaults(GTK_TABLE(tableInitialing), googleEventBox, 12, 14, 24, 28 );
 
@@ -412,9 +421,40 @@ void googleLogoClicked( GtkWidget*eventBox, GdkEvent *event, gpointer textBox){
 	gtk_widget_show(textBox);
 }
 
+void searchOneClick( GtkWidget * eventBox, GdkEvent * event, GtkWidget * webView){
+	webkit_web_view_load_uri(WEBKIT_WEB_VIEW(webView),"http://www.oneclick.com");
+	gtk_window_set_title(GTK_WINDOW(webView->parent->parent->parent->parent->parent->parent), "http://www.oneclick.com");
+}
+
+void searchFacebook( GtkWidget * eventBox, GdkEvent * event, GtkWidget * webView){
+	webkit_web_view_load_uri(WEBKIT_WEB_VIEW(webView),"http://www.facebook.com");
+	gtk_window_set_title(GTK_WINDOW(webView->parent->parent->parent->parent->parent->parent), "http://www.facebook.com");
+}
+
+void searchGmail( GtkWidget * eventBox, GdkEvent * event, GtkWidget * webView){
+	webkit_web_view_load_uri(WEBKIT_WEB_VIEW(webView),"http://www.Gmail.com");
+	gtk_window_set_title(GTK_WINDOW(webView->parent->parent->parent->parent->parent->parent), "http://www.Gmail.com");
+}
+
+void searchTwitter( GtkWidget * eventBox, GdkEvent * event, GtkWidget * webView){
+	webkit_web_view_load_uri(WEBKIT_WEB_VIEW(webView),"http://www.twitter.com");
+	gtk_window_set_title(GTK_WINDOW(webView->parent->parent->parent->parent->parent->parent), "http://www.twitter.com");
+}
+
+void searchSKype( GtkWidget * eventBox, GdkEvent * event, GtkWidget * webView){
+	webkit_web_view_load_uri(WEBKIT_WEB_VIEW(webView),"http://www.skype.com");
+	gtk_window_set_title(GTK_WINDOW(webView->parent->parent->parent->parent->parent->parent), "http://www.skype.com");
+}
+
+void searchGoogle( GtkWidget * eventBox, GdkEvent * event, GtkWidget * webView){
+	webkit_web_view_load_uri(WEBKIT_WEB_VIEW(webView),"http://www.google.com");
+	gtk_window_set_title(GTK_WINDOW(webView->parent->parent->parent->parent->parent->parent), "http://www.google.com");
+}
+
 GtkWidget * initialiseEventBox( GtkWidget *childWidget){
 	GtkWidget* eventBox;
 	eventBox = gtk_event_box_new();
+	//gdk_window_set_cursor ( eventBox->window, gdk_cursor_new (GDK_HAND1));
 
 	gtk_event_box_set_above_child( GTK_EVENT_BOX(eventBox), FALSE);
 	gtk_widget_set_events(eventBox, GDK_BUTTON_PRESS_MASK);
