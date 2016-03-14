@@ -1,9 +1,16 @@
 # Gtk_browser
-Building a browser in c making use of the gtk/gtk.h and webkit/webkit.h libraries
 
-To compile this project, open your terminal and go to the directory containing the files
-The is a makefile present. In the terminal type "make" and run the executable by typing "./BrowserMain".
+#Project description
+	Gtk_browser is a project that involves building a browser using the gtk and webkit libraries in C.
 
-		What you need to compile this project
-	This project is based on the gtk/gtk.h and webkit/webkit.h libraries meaning to get this project
-	running you  need to get the libraries installed.
+#Prerequisite for running the program
+	->The gtk and webkit libraries must be installed on the system.
+	->The system must have gcc installed
+
+#Compiling the program
+	To compile the project, open the terminal and change directory to the directory of the project.
+The type "make". After which the program will be compiled.
+
+#Running the browser
+	After a successful compilation. Type "./BrowserMain" to run the browser
+
